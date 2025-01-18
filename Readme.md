@@ -1,5 +1,8 @@
 # Frontend Assignment
 
+## Netlify deployed url
+https://saas-labs-takehome.netlify.app/
+
 
 ## Assignment
 
