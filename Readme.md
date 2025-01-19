@@ -5,6 +5,9 @@
 The app is deployed on Netlify. You can view it live here:
 [Live demo](https://saas-labs-takehome.netlify.app/)
 
+## Demo Gif
+![Watch gif](https://github.com/rahulchaudhary2244/media-repository/blob/main/table-demo.gif)
+
 ## Project Setup
 
 Follow these steps to set up the project locally:
