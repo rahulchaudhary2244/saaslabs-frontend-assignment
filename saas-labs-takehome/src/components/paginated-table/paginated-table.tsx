@@ -1,82 +1,71 @@
 import { useFetch } from "../../hooks/use-fetch";
+import { usePagination } from "../../hooks/use-pagination";
 import { useTable } from "../../hooks/use-table";
-
-import { Button } from "../button/button";
-
-type Project = {
-    "s.no": number;
-    "amt.pledged": number;
-    "percentage.funded": number;
-};
-
-const URL =
-    "https://raw.githubusercontent.com/saaslabsco/frontend-assignment/refs/heads/master/frontend-assignment.json";
+import { Pagination } from "../pagination/pagination";
+import { DATA_FETCHING_URL, getColumns } from "./constants";
+import styles from "./paginated-table.module.css";
+import { type Project } from "./types";
 
 export const PaginatedTable = () => {
-    const [data] = useFetch({
-        url: URL,
+    const [data] = useFetch<Project[]>({
+        url: DATA_FETCHING_URL,
         initialState: [],
     });
 
-    const table = useTable({
-        data: data as Project[],
+    const { getHeaders, getRows } = useTable({
+        data: data,
         getRowId: (row) => row["s.no"],
-        columns: [
-            {
-                columnId: "1",
-                headerName: "S.No.",
-                cellRenderer: ({ row }) => row["s.no"],
-            },
-            {
-                columnId: "2",
-                headerName: "Percentage funded",
-                cellRenderer: ({ row }) => row["percentage.funded"],
-            },
-            {
-                columnId: "3",
-                headerName: "Amount pledged",
-                cellRenderer: ({ row }) => row["amt.pledged"],
-            },
-        ],
+        columns: getColumns(),
     });
 
     const {
-        pageInfo: { currentPage, totalPages },
+        currentPage,
+        totalPages,
+        getCurrentPageData,
         handleFirstPage,
         handleLastPage,
         handleNextPage,
         handlePreviousPage,
-    } = table.pagination;
+    } = usePagination({
+        data: data,
+        defaultPage: 1,
+        defaultPerPage: 5,
+        totalCount: data.length,
+    });
+
+    const getCurrentPageRows = () => {
+        const currentPageData = getCurrentPageData();
+        return getRows(currentPageData);
+    };
 
     return (
         <>
-            <table>
+            <table className={styles["styled-table"]}>
                 <thead>
                     <tr>
-                        {table.getHeaders().map(({ columnId, headerValue }) => (
+                        {getHeaders().map(({ columnId, headerValue }) => (
                             <th key={columnId}>{headerValue}</th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {table
-                        .getCurrentPageRows()
-                        .map(({ rowId, columnsInRow }) => (
-                            <tr key={rowId}>
-                                {columnsInRow.map(({ columnId, cellValue }) => (
-                                    <td key={columnId}>{cellValue}</td>
-                                ))}
-                            </tr>
-                        ))}
+                    {getCurrentPageRows().map(({ rowId, columnsInRow }) => (
+                        <tr key={rowId}>
+                            {columnsInRow.map(({ columnId, cellValue }) => (
+                                <td key={columnId}>{cellValue}</td>
+                            ))}
+                        </tr>
+                    ))}
                 </tbody>
             </table>
-            <div style={{ display: "flex" }}>
-                <Button onClick={handleFirstPage}>fist page</Button>
-                <Button onClick={handlePreviousPage}>previous</Button>
-                {currentPage}/{totalPages}
-                <Button onClick={handleNextPage}>next</Button>
-                <Button onClick={handleLastPage}>last page</Button>
-            </div>
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                handleFirstPage={handleFirstPage}
+                handleLastPage={handleLastPage}
+                handleNextPage={handleNextPage}
+                handlePreviousPage={handlePreviousPage}
+            />
         </>
     );
 };

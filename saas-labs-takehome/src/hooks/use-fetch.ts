@@ -17,18 +17,18 @@ const fetchData = async ({
     }
 };
 
-type Args = {
+type Args<T> = {
     url: string;
-    initialState: unknown;
+    initialState: T;
     onError?: (e: unknown) => void;
 };
 
-export const useFetch = ({ url, initialState, onError }: Args) => {
+export const useFetch = <T>({ url, initialState, onError }: Args<T>) => {
     const [data, setData] = useState(initialState);
 
     useEffect(() => {
         fetchData({ url, onError }).then((data) => setData(data));
     }, [url, onError]);
 
-    return [data, setData];
+    return [data, setData] as const;
 };

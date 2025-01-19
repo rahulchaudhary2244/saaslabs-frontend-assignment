@@ -44,7 +44,8 @@ export const usePagination = <T>({
     const handleLastPage = () => setState({ currentPage: totalPages });
 
     return {
-        pageInfo: { currentPage, totalPages },
+        currentPage,
+        totalPages,
         getCurrentPageData,
         handleNextPage,
         handlePreviousPage,

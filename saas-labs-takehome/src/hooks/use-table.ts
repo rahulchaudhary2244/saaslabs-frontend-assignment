@@ -1,7 +1,6 @@
 import { type ReactNode } from "react";
-import { usePagination } from "./use-pagination";
 
-type ColumnDef<T> = {
+export type ColumnDef<T> = {
     columnId: string;
     headerName: string;
     cellRenderer: ({ row }: { row: T }) => ReactNode;
@@ -13,14 +12,7 @@ type Args<T> = {
     getRowId: (row: T) => number;
 };
 
-export const useTable = <T>({ columns, data, getRowId }: Args<T>) => {
-    const pagination = usePagination({
-        data,
-        defaultPage: 1,
-        defaultPerPage: 5,
-        totalCount: data.length,
-    });
-
+export const useTable = <T>({ columns, getRowId }: Args<T>) => {
     const getHeaders = () =>
         columns.map((col) => ({
             columnId: col.columnId,
@@ -36,14 +28,8 @@ export const useTable = <T>({ columns, data, getRowId }: Args<T>) => {
             })),
         }));
 
-    const getCurrentPageRows = () => {
-        const currentPageData = pagination.getCurrentPageData();
-        return getRows(currentPageData);
-    };
-
     return {
         getHeaders,
-        getCurrentPageRows,
-        pagination,
+        getRows,
     };
 };
