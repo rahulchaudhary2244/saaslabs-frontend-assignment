@@ -1,34 +1,28 @@
 import { useEffect, useState } from "react";
 
-const fetchData = async ({
-    url,
-    onError,
-}: {
-    url: string;
-    onError?: (e: unknown) => void;
-}) => {
-    try {
-        const response = await fetch(url);
-        return await response.json();
-    } catch (e) {
-        if (onError) {
-            onError(e);
-        }
-    }
+const fetchData = async (url: string) => {
+    const response = await fetch(url);
+    return await response.json();
 };
 
-type Args<T> = {
+type Args = {
     url: string;
-    initialState: T;
     onError?: (e: unknown) => void;
 };
 
-export const useFetch = <T>({ url, initialState, onError }: Args<T>) => {
-    const [data, setData] = useState(initialState);
+export const useFetch = <T>({ url, onError }: Args) => {
+    const [data, setData] = useState<T | undefined | null>(undefined);
 
     useEffect(() => {
-        fetchData({ url, onError }).then((data) => setData(data));
-    }, [url, onError]);
+        fetchData(url)
+            .then((data) => setData(data))
+            .catch((e) => {
+                if (onError) {
+                    onError(e);
+                }
+                setData(null);
+            });
+    }, [url]);
 
-    return [data, setData] as const;
+    return data;
 };

@@ -1,9 +1,6 @@
 import { type ColumnDef } from "../../hooks/use-table";
 import { type Project } from "./types";
 
-export const DATA_FETCHING_URL =
-    "https://raw.githubusercontent.com/saaslabsco/frontend-assignment/refs/heads/master/frontend-assignment.json";
-
 export const getColumns = () => {
     return [
         {

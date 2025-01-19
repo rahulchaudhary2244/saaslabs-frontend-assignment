@@ -1,7 +1,7 @@
-import { PaginatedTable } from "./components/paginated-table/paginated-table";
+import { ProjectsInfo } from "./components/projects-info/projects-info";
 
 const App = () => {
-    return <PaginatedTable />;
+    return <ProjectsInfo />;
 };
 
 export default App;

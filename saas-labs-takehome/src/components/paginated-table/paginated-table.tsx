@@ -1,17 +1,15 @@
-import { useFetch } from "../../hooks/use-fetch";
 import { usePagination } from "../../hooks/use-pagination";
 import { useTable } from "../../hooks/use-table";
 import { Pagination } from "../pagination/pagination";
-import { DATA_FETCHING_URL, getColumns } from "./constants";
+import { getColumns } from "./constants";
 import styles from "./paginated-table.module.css";
 import { type Project } from "./types";
 
-export const PaginatedTable = () => {
-    const [data] = useFetch<Project[]>({
-        url: DATA_FETCHING_URL,
-        initialState: [],
-    });
+type Props = {
+    data: Project[];
+};
 
+export const PaginatedTable = ({ data }: Props) => {
     const { getHeaders, getRows } = useTable({
         data: data,
         getRowId: (row) => row["s.no"],
