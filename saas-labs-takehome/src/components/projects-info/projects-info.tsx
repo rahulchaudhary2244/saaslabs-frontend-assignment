@@ -2,6 +2,7 @@ import { useFetch } from "../../hooks/use-fetch";
 import { PaginatedTable } from "../paginated-table/paginated-table";
 import { Project } from "../paginated-table/types";
 import { DATA_FETCHING_URL } from "./constants";
+import styles from "./projects-info.module.css";
 
 export const ProjectsInfo = () => {
     const data = useFetch<Project[]>({
@@ -9,10 +10,22 @@ export const ProjectsInfo = () => {
         onError: (e) => console.error(e),
     });
 
-    if (data === undefined) return <div>Loading...</div>;
+    if (data === undefined)
+        return <div className={styles.textStyle}>Loading...</div>;
 
     if (data === null)
-        return <div>Something went wrong!, check console for more detail</div>;
+        return (
+            <div className={styles.textStyle}>
+                An error occurred! Please check the console for more details.
+            </div>
+        );
 
-    return <PaginatedTable data={data} />;
+    return (
+        <>
+            <h1 className={styles.textStyle}>
+                Overview of Projects Info Table
+            </h1>
+            <PaginatedTable data={data} />
+        </>
+    );
 };

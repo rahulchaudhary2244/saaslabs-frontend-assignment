@@ -64,3 +64,10 @@ h6 {
 #__next {
     isolation: isolate;
 }
+
+/* --------- */
+footer {
+    margin-top: 20vh;
+    padding: 2rem;
+    text-align: center;
+}
