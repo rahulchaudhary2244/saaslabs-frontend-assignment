@@ -1,9 +1,9 @@
 import { usePagination } from "../../hooks/use-pagination";
 import { useTable } from "../../hooks/use-table";
 import { Pagination } from "../pagination/pagination";
-import { getColumns } from "./constants";
 import styles from "./paginated-table.module.css";
 import { type Project } from "./types";
+import { getColumns } from "./utils";
 
 type Props = {
     data: Project[];
