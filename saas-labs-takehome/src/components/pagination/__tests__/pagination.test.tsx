@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Pagination } from "../pagination";
 
 describe("Pagination Component", () => {
@@ -8,10 +8,6 @@ describe("Pagination Component", () => {
     const mockHandlePreviousPage = vi.fn();
     const mockHandleNextPage = vi.fn();
     const mockHandleLastPage = vi.fn();
-
-    afterEach(() => {
-        vi.clearAllMocks();
-    });
 
     it("should render the pagination buttons correctly", () => {
         render(
